@@ -1,416 +1,157 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import api from "../services/api";
 
-import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  Grid,
-  Heading,
-  Input,
-  Select,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+const gold = "#d4af37";
+const fallback = "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80";
+const categories = ["All", "Music", "Sports", "Workshop", "Festival", "Technology", "Other"];
 
-import { FaSearch, FaFilter } from "react-icons/fa";
-
-import EventCard from "../components/EventCard";
-import eventsData from "../data/eventsData";
-
-function Events() {
+export default function Events() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [favoriteIds, setFavoriteIds] = useState([]);
+  const [events, setEvents] = useState([]);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
-  const [location, setLocation] = useState("");
-  const [price, setPrice] = useState("");
-  const [date, setDate] = useState("");
+  const [category, setCategory] = useState("All");
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const categories = [
-    ...new Set(eventsData.map((event) => event.category)),
-  ];
+  useEffect(() => {
+    let active = true;
+    api.get("/events", { params: { page, search, category } })
+      .then(({ data }) => {
+        if (!active) return;
+        setEvents(Array.isArray(data.events) ? data.events : []);
+        setTotal(Number(data.total ?? data.count ?? 0));
+        setTotalPages(Number(data.totalPages ?? 0));
+      })
+      .catch((err) => {
+        if (active) setError(err.response?.data?.message || "Could not load events. Check that the backend and MongoDB are running.");
+      })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, [page, search, category]);
 
-  const locations = [
-    ...new Set(eventsData.map((event) => event.location)),
-  ];
+  useEffect(() => {
+    let active = true;
+    if (!user) { setFavoriteIds([]); return () => { active = false; }; }
+    api.get("/favorites")
+      .then(({ data }) => {
+        if (active) setFavoriteIds((data.favorites || []).map((event) => String(event._id)));
+      })
+      .catch(() => {});
+    return () => { active = false; };
+  }, [user]);
 
-  const filteredEvents = useMemo(() => {
-    return eventsData.filter((event) => {
-      const searchText = search.toLowerCase().trim();
-
-      const matchesSearch =
-        event.title.toLowerCase().includes(searchText) ||
-        event.category.toLowerCase().includes(searchText) ||
-        event.location.toLowerCase().includes(searchText);
-
-      const matchesCategory =
-        category === "" || event.category === category;
-
-      const matchesLocation =
-        location === "" || event.location === location;
-
-      const matchesPrice =
-        price === "" ||
-        (price === "under500" && event.price < 500) ||
-        (price === "500-1000" &&
-          event.price >= 500 &&
-          event.price <= 1000) ||
-        (price === "above1000" && event.price > 1000);
-
-      const matchesDate =
-        date === "" || event.date === date;
-
-      return (
-        matchesSearch &&
-        matchesCategory &&
-        matchesLocation &&
-        matchesPrice &&
-        matchesDate
-      );
-    });
-  }, [search, category, location, price, date]);
-
-  const clearFilters = () => {
-    setSearch("");
-    setCategory("");
-    setLocation("");
-    setPrice("");
-    setDate("");
+  const toggleFavorite = async (event) => {
+    if (!user) {
+      navigate("/login", { state: { from: "/events" } });
+      return;
+    }
+    const id = String(event._id);
+    try {
+      if (favoriteIds.includes(id)) {
+        await api.delete(`/favorites/${id}`);
+        setFavoriteIds((old) => old.filter((savedId) => savedId !== id));
+      } else {
+        await api.post(`/favorites/${id}`);
+        setFavoriteIds((old) => [...old, id]);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Could not update favorites.");
+    }
   };
 
   return (
-    <Box
-      minH="100vh"
-      bg="#050505"
-      color="white"
-      py={10}
-    >
-      <Container maxW="1400px">
-        {/* PAGE TITLE */}
+    <main style={styles.page}>
+      <div style={styles.container}>
+        <p style={styles.eyebrow}>DISCOVER EXPERIENCES</p>
+        <h1 style={styles.heading}>Find your next <span style={{ color: gold }}>great event.</span></h1>
+        <p style={styles.subtitle}>Events published by organizers appear here directly from the Eventix database.</p>
 
-        <VStack
-          align="start"
-          spacing={3}
-          mb={8}
-        >
-          <Text
-            color="#D4AF37"
-            fontWeight="bold"
-            textTransform="uppercase"
-            letterSpacing="2px"
-          >
-            Discover Events
-          </Text>
+        <div style={styles.filters}>
+          <input aria-label="Search events" placeholder="Search events, cities or venues" value={search}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }} style={styles.input} />
+          <select aria-label="Filter by category" value={category}
+            onChange={(e) => { setCategory(e.target.value); setPage(1); }} style={{ ...styles.input, maxWidth: 220 }}>
+            {categories.map((item) => <option key={item} value={item}>{item}</option>)}
+          </select>
+        </div>
 
-          <Heading
-            fontSize={{
-              base: "3xl",
-              md: "5xl",
-            }}
-          >
-            Find Your Next Experience
-          </Heading>
-
-          <Text color="gray.400">
-            Discover concerts, workshops, sports, festivals and
-            unforgettable experiences.
-          </Text>
-        </VStack>
-
-        {/* SEARCH */}
-
-        <Flex
-          bg="gray.900"
-          p={4}
-          borderRadius="12px"
-          border="1px solid"
-          borderColor="gray.700"
-          gap={3}
-          mb={6}
-          direction={{
-            base: "column",
-            md: "row",
-          }}
-        >
-          <Flex
-            align="center"
-            flex="1"
-            bg="gray.800"
-            borderRadius="8px"
-            px={4}
-          >
-            <FaSearch color="#D4AF37" />
-
-            <Input
-              ml={3}
-              border="none"
-              outline="none"
-              _focus={{
-                boxShadow: "none",
-              }}
-              placeholder="Search events, categories or locations..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              color="white"
-            />
-          </Flex>
-
-          <Button
-            bg="#D4AF37"
-            color="black"
-            px={8}
-            _hover={{
-              bg: "#B8962E",
-            }}
-          >
-            Search
-          </Button>
-        </Flex>
-
-        {/* FILTER AREA */}
-
-        <Box
-          bg="gray.900"
-          p={5}
-          borderRadius="12px"
-          border="1px solid"
-          borderColor="gray.700"
-          mb={10}
-        >
-          <Flex
-            align="center"
-            gap={2}
-            mb={5}
-          >
-            <FaFilter color="#D4AF37" />
-
-            <Heading size="md">
-              Filter Events
-            </Heading>
-          </Flex>
-
-          <Grid
-            templateColumns={{
-              base: "1fr",
-              md: "repeat(2, 1fr)",
-              lg: "repeat(4, 1fr)",
-            }}
-            gap={4}
-          >
-            {/* CATEGORY */}
-
-            <Box>
-              <Text
-                color="gray.400"
-                mb={2}
-              >
-                Category
-              </Text>
-
-              <Select
-                value={category}
-                onChange={(e) =>
-                  setCategory(e.target.value)
-                }
-                bg="gray.800"
-                borderColor="gray.700"
-              >
-                <option value="">
-                  All Categories
-                </option>
-
-                {categories.map((item) => (
-                  <option
-                    key={item}
-                    value={item}
-                  >
-                    {item}
-                  </option>
-                ))}
-              </Select>
-            </Box>
-
-            {/* LOCATION */}
-
-            <Box>
-              <Text
-                color="gray.400"
-                mb={2}
-              >
-                Location
-              </Text>
-
-              <Select
-                value={location}
-                onChange={(e) =>
-                  setLocation(e.target.value)
-                }
-                bg="gray.800"
-                borderColor="gray.700"
-              >
-                <option value="">
-                  All Locations
-                </option>
-
-                {locations.map((item) => (
-                  <option
-                    key={item}
-                    value={item}
-                  >
-                    {item}
-                  </option>
-                ))}
-              </Select>
-            </Box>
-
-            {/* PRICE */}
-
-            <Box>
-              <Text
-                color="gray.400"
-                mb={2}
-              >
-                Price
-              </Text>
-
-              <Select
-                value={price}
-                onChange={(e) =>
-                  setPrice(e.target.value)
-                }
-                bg="gray.800"
-                borderColor="gray.700"
-              >
-                <option value="">
-                  All Prices
-                </option>
-
-                <option value="under500">
-                  Under ₹500
-                </option>
-
-                <option value="500-1000">
-                  ₹500 - ₹1000
-                </option>
-
-                <option value="above1000">
-                  Above ₹1000
-                </option>
-              </Select>
-            </Box>
-
-            {/* DATE */}
-
-            <Box>
-              <Text
-                color="gray.400"
-                mb={2}
-              >
-                Date
-              </Text>
-
-              <Input
-                type="date"
-                value={date}
-                onChange={(e) =>
-                  setDate(e.target.value)
-                }
-                bg="gray.800"
-                borderColor="gray.700"
-              />
-            </Box>
-          </Grid>
-
-          <Button
-            mt={5}
-            variant="outline"
-            borderColor="#D4AF37"
-            color="#D4AF37"
-            onClick={clearFilters}
-            _hover={{
-              bg: "#D4AF37",
-              color: "black",
-            }}
-          >
-            Clear Filters
-          </Button>
-        </Box>
-
-        {/* RESULTS */}
-
-        <Flex
-          justify="space-between"
-          align="center"
-          mb={6}
-        >
-          <Heading size="lg">
-            Available Events
-          </Heading>
-
-          <Text color="gray.400">
-            {filteredEvents.length} event
-            {filteredEvents.length !== 1
-              ? "s"
-              : ""}{" "}
-            found
-          </Text>
-        </Flex>
-
-        {/* EVENT GRID */}
-
-        {filteredEvents.length > 0 ? (
-          <Grid
-            templateColumns={{
-              base: "1fr",
-              md: "repeat(2, 1fr)",
-              lg: "repeat(3, 1fr)",
-            }}
-            gap={7}
-          >
-            {filteredEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                event={event}
-              />
-            ))}
-          </Grid>
-        ) : (
-          /* NO RESULTS */
-
-          <Box
-            textAlign="center"
-            py={20}
-            bg="gray.900"
-            borderRadius="12px"
-            border="1px solid"
-            borderColor="gray.700"
-          >
-            <Heading
-              size="lg"
-              mb={3}
-            >
-              No Results Found
-            </Heading>
-
-            <Text color="gray.400" mb={6}>
-              We couldn't find any events matching
-              your search or filters.
-            </Text>
-
-            <Button
-              bg="#D4AF37"
-              color="black"
-              onClick={clearFilters}
-              _hover={{
-                bg: "#B8962E",
-              }}
-            >
-              Clear Search & Filters
-            </Button>
-          </Box>
+        {error && <p role="alert" style={styles.error}>{error}</p>}
+        {loading && <p style={{ color: gold }}>Loading events from MongoDB…</p>}
+        {!loading && !error && <p style={styles.count}>{total} event{total !== 1 ? "s" : ""} found</p>}
+        {!loading && !error && events.length === 0 && (
+          <div style={styles.empty}><h2>No events found yet</h2><p>Try another search, or ask an organizer to publish an event.</p></div>
         )}
-      </Container>
-    </Box>
+
+        <div style={styles.grid}>
+          {events.map((event) => {
+            const saved = favoriteIds.includes(String(event._id));
+            return (
+              <article key={event._id} style={styles.card}>
+                <img src={event.banner || fallback} alt={event.title} style={styles.image}
+                  onError={(e) => { if (e.currentTarget.src !== fallback) e.currentTarget.src = fallback; }} />
+                <div style={styles.cardBody}>
+                  <div style={styles.cardTop}>
+                    <span style={styles.category}>{event.category || "EVENT"}</span>
+                    <button aria-label={saved ? "Remove from favorites" : "Add to favorites"}
+                      onClick={() => toggleFavorite(event)} style={styles.favorite}>{saved ? "♥ Saved" : "♡ Save"}</button>
+                  </div>
+                  <h2 style={styles.cardTitle}>{event.title}</h2>
+                  <p style={styles.muted}>📍 {event.city || event.venue}{event.city && event.venue ? ` · ${event.venue}` : ""}</p>
+                  <p style={styles.muted}>📅 {event.date ? new Date(event.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "Date to be announced"} · {event.time}</p>
+                  <div style={styles.cardBottom}>
+                    <strong style={styles.price}>{Number(event.price) === 0 ? "Free" : `₹${Number(event.price).toLocaleString("en-IN")}`}</strong>
+                    <Link to={`/events/${event._id}`} style={styles.detailsButton}>View details</Link>
+                  </div>
+                  <p style={styles.seats}>{event.availableSeats} tickets left</p>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        {!loading && !error && totalPages > 1 && (
+          <div style={styles.pagination}>
+            <button disabled={page <= 1} onClick={() => setPage((current) => current - 1)} style={styles.pageButton}>Previous</button>
+            <span>Page {page} of {totalPages}</span>
+            <button disabled={page >= totalPages} onClick={() => setPage((current) => current + 1)} style={styles.pageButton}>Next</button>
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
 
-export default Events;
+const styles = {
+  page: { minHeight: "100vh", background: "#080808", color: "#f7f4ed", padding: "38px clamp(16px, 5vw, 72px) 70px" },
+  container: { maxWidth: 1280, margin: "0 auto" },
+  eyebrow: { color: gold, letterSpacing: 4, fontSize: 12, fontWeight: 700 },
+  heading: { fontSize: "clamp(30px, 4vw, 48px)", margin: "8px 0" },
+  subtitle: { color: "#aaa", marginBottom: 24 },
+  filters: { display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 },
+  input: { flex: "1 1 260px", minWidth: 0, padding: "13px 15px", border: "1px solid #48402a", borderRadius: 10, background: "#121212", color: "white", outlineColor: gold },
+  count: { color: "#aaa", marginBottom: 18 },
+  error: { color: "#ff8585", padding: 16, background: "#241414", borderRadius: 12, marginBottom: 18 },
+  empty: { padding: 36, textAlign: "center", border: "1px dashed #514626", borderRadius: 18, color: "#aaa" },
+  grid: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,270px),1fr))", gap: 22 },
+  card: { overflow: "hidden", border: "1px solid #29251a", borderRadius: 18, background: "#111" },
+  image: { width: "100%", height: 185, objectFit: "cover", background: "#222" },
+  cardBody: { padding: 18 },
+  cardTop: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 },
+  category: { color: gold, fontSize: 12, fontWeight: 700 },
+  favorite: { border: "1px solid #514626", background: "#17140d", color: gold, borderRadius: 8, padding: "7px 10px", cursor: "pointer" },
+  cardTitle: { fontSize: 21, margin: "8px 0" },
+  muted: { color: "#aaa", fontSize: 14, margin: "6px 0" },
+  cardBottom: { display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 18, gap: 10 },
+  price: { color: gold, fontSize: 21 },
+  detailsButton: { display: "inline-block", padding: "10px 14px", borderRadius: 9, background: gold, color: "#080808", textDecoration: "none", fontWeight: 700, fontSize: 13, whiteSpace: "nowrap" },
+  seats: { color: "#777", fontSize: 12, marginTop: 12 },
+  pagination: { display: "flex", justifyContent: "center", alignItems: "center", gap: 18, marginTop: 35 },
+  pageButton: { background: gold, color: "#080808", border: 0, borderRadius: 8, padding: "10px 18px", cursor: "pointer", fontWeight: 700 },
+};

@@ -1,4 +1,3 @@
-
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -14,102 +13,136 @@ import MyBookings from "./pages/MyBookings";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Payment from "./pages/Payment";
+import Favorites from "./pages/Favorites";
+
+/* =========================
+   ORGANIZER
+========================= */
 
 import OrganizerDashboard from "./pages/organizer/OrganizerDashboard";
 import CreateEvent from "./pages/organizer/CreateEvent";
 import ManageEvents from "./pages/organizer/ManageEvents";
+import EditEvent from "./pages/organizer/EditEvent";
 import Attendees from "./pages/organizer/Attendees";
+import TicketScanner from "./pages/organizer/TicketScanner";
+import OrganizerAnalytics from "./pages/organizer/OrganizerAnalytics";
+
+/* =========================
+   ADMIN
+========================= */
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
 
 function App() {
   const location = useLocation();
 
-  // Hide Navbar on Login and Register pages
-  const hideNavbar =
-    location.pathname === "/login" ||
-    location.pathname === "/register";
+  /* =========================
+     HIDE NAVBAR ON AUTH PAGES
+  ========================= */
 
-  // Hide Footer on Login and Register pages
-  const hideFooter =
+  const hideNavbar =
     location.pathname === "/login" ||
     location.pathname === "/register";
 
   return (
     <div className="app">
 
-      {/* NAVBAR */}
+      {/* =========================
+          NAVBAR
+      ========================= */}
+
       {!hideNavbar && <Navbar />}
 
       <main>
         <Routes>
 
-          {/* ========================================
-              PUBLIC PAGES
-          ======================================== */}
+          {/* =========================
+              PUBLIC HOME
+          ========================= */}
 
           <Route
             path="/"
             element={<Home />}
           />
 
+          {/* =========================
+              ALL EVENTS
+          ========================= */}
+
           <Route
             path="/events"
             element={<Events />}
           />
+
+          {/* =========================
+              EVENT DETAILS
+          ========================= */}
 
           <Route
             path="/events/:id"
             element={<EventDetails />}
           />
 
+          {/* =========================
+              LOGIN
+          ========================= */}
+
           <Route
             path="/login"
             element={<Login />}
           />
+
+          {/* =========================
+              REGISTER
+          ========================= */}
 
           <Route
             path="/register"
             element={<Register />}
           />
 
-
-          {/* ========================================
-              LOGGED-IN USER PAGES
-          ======================================== */}
+          {/* =========================
+              LOGGED-IN USER ROUTES
+          ========================= */}
 
           <Route element={<ProtectedRoute />}>
 
-            {/* User Home */}
             <Route
               path="/home"
               element={<UserHome />}
             />
 
-            {/* Booking */}
             <Route
               path="/booking/:id"
               element={<Booking />}
             />
 
-            {/* My Bookings */}
             <Route
               path="/my-bookings"
               element={<MyBookings />}
             />
 
-            {/* Profile */}
+            <Route
+              path="/favorites"
+              element={<Favorites />}
+            />
+
             <Route
               path="/profile"
               element={<Profile />}
             />
 
+            <Route
+              path="/payment"
+              element={<Payment />}
+            />
+
           </Route>
 
-
-          {/* ========================================
-              ORGANIZER PAGES
-          ======================================== */}
+          {/* =========================
+              ORGANIZER ROUTES
+          ========================= */}
 
           <Route
             element={
@@ -117,32 +150,58 @@ function App() {
             }
           >
 
+            {/* ORGANIZER DASHBOARD */}
+
             <Route
               path="/organizer"
               element={<OrganizerDashboard />}
             />
+
+            {/* CREATE EVENT */}
 
             <Route
               path="/organizer/create"
               element={<CreateEvent />}
             />
 
+            {/* MANAGE EVENTS */}
+
+           <Route
+  path="/organizer/manage-events"
+  element={<ManageEvents />}
+/> 
+
+            {/* EDIT EVENT */}
+
             <Route
-              path="/organizer/manage"
-              element={<ManageEvents />}
-            />
+  path="/organizer/edit/:id"
+  element={<EditEvent />}
+/>
+
+            {/* ATTENDEES */}
 
             <Route
               path="/organizer/attendees"
               element={<Attendees />}
             />
 
+            <Route
+              path="/organizer/analytics"
+              element={<OrganizerAnalytics />}
+            />
+
+            {/* QR TICKET SCANNER */}
+
+            <Route
+              path="/organizer/scanner"
+              element={<TicketScanner />}
+            />
+
           </Route>
 
-
-          {/* ========================================
-              ADMIN PAGES
-          ======================================== */}
+          {/* =========================
+              ADMIN ROUTES
+          ========================= */}
 
           <Route
             element={
@@ -157,10 +216,9 @@ function App() {
 
           </Route>
 
-
-          {/* ========================================
+          {/* =========================
               FALLBACK
-          ======================================== */}
+          ========================= */}
 
           <Route
             path="*"
@@ -170,13 +228,14 @@ function App() {
         </Routes>
       </main>
 
+      {/* =========================
+          FOOTER ONLY ON PUBLIC HOME
+      ========================= */}
 
-      {/* FOOTER */}
-      {!hideFooter && <Footer />}
+      {location.pathname === "/" && <Footer />}
 
     </div>
   );
 }
 
 export default App;
-

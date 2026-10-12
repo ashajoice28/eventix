@@ -1,0 +1,13 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import api from "../services/api";
+const gold = "#d4af37";
+const fallback = "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1000&q=80";
+export default function Favorites() {
+ const [favorites,setFavorites]=useState([]);const [loading,setLoading]=useState(true);const [error,setError]=useState("");
+ const load=()=>api.get("/favorites").then(({data})=>setFavorites(data.favorites||[])).catch(e=>setError(e.response?.data?.message||"Please sign in to view your saved events.")).finally(()=>setLoading(false));
+ useEffect(()=>{load();},[]);
+ const remove=async(id)=>{try{await api.delete(`/favorites/${id}`);setFavorites(old=>old.filter(e=>e._id!==id));}catch(e){setError(e.response?.data?.message||"Could not remove event.");}};
+ return <main style={page}><div style={{maxWidth:1100,margin:"0 auto"}}><Link to="/events" style={{color:gold}}>← Browse events</Link><h1 style={{fontSize:38,margin:"18px 0 8px"}}>My Favorites</h1><p style={{color:"#aaa",marginBottom:24}}>Your saved events are linked to your account in MongoDB.</p>{loading&&<p>Loading favorites…</p>}{error&&<p role="alert" style={{color:"#ff9b9b"}}>{error}</p>}{!loading&&!favorites.length&&!error&&<section style={card}><h2>No saved events yet</h2><p style={{color:"#aaa"}}>Tap “Save” on any event to keep it here.</p><Link to="/events" style={button}>Explore events</Link></section>}<div style={grid}>{favorites.map(e=><article key={e._id} style={card}><img src={e.banner||fallback} alt={e.title} onError={ev=>ev.currentTarget.src=fallback} style={{width:"100%",height:160,objectFit:"cover",borderRadius:10}}/><h2 style={{fontSize:20,margin:"14px 0 6px"}}>{e.title}</h2><p style={{color:"#aaa"}}>{e.city} · ₹{Number(e.price).toLocaleString("en-IN")}</p><div style={{display:"flex",gap:8,marginTop:14}}><Link to={`/events/${e._id}`} style={button}>View event</Link><button onClick={()=>remove(e._id)} style={removeButton}>Remove</button></div></article>)}</div></div></main>;
+}
+const page={minHeight:"100vh",background:"#080808",color:"#f7f4ed",padding:"32px 18px 70px"};const grid={display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,260px),1fr))",gap:16};const card={background:"#111",border:"1px solid #3b3320",borderRadius:15,padding:18,marginBottom:14};const button={display:"inline-block",background:gold,color:"#080808",padding:"10px 13px",borderRadius:8,textDecoration:"none",fontWeight:800,border:0};const removeButton={background:"transparent",border:"1px solid #6d3333",color:"#ff9b9b",borderRadius:8,padding:"10px 13px",cursor:"pointer"};

@@ -1,119 +1,12 @@
-
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Heading,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import api from "../../services/api";
+const gold = "#d4af37";
 export default function OrganizerDashboard() {
-  return (
-    <Box minH="100vh" bg="#080808" color="white" py={10}>
-      <Container maxW="1200px">
-        <VStack align="stretch" gap={8}>
-          <Box>
-            <Text color="#D4AF37" fontWeight="bold">
-              ORGANIZER
-            </Text>
-
-            <Heading mt={2} color="#D4AF37">
-              Organizer Dashboard
-            </Heading>
-
-            <Text color="gray.400" mt={2}>
-              Create, manage and monitor your events.
-            </Text>
-          </Box>
-
-          <Grid
-            templateColumns={{
-              base: "1fr",
-              md: "repeat(3, 1fr)",
-            }}
-            gap={6}
-          >
-            <Box
-              bg="#111"
-              border="1px solid #333"
-              borderRadius="xl"
-              p={6}
-            >
-              <Heading size="md" color="#D4AF37">
-                Create Event
-              </Heading>
-
-              <Text color="gray.400" mt={3}>
-                Create a new event and add ticket details.
-              </Text>
-
-              <Button
-                as={Link}
-                to="/organizer/create-event"
-                mt={5}
-                bg="#D4AF37"
-                color="black"
-              >
-                Create Event
-              </Button>
-            </Box>
-
-            <Box
-              bg="#111"
-              border="1px solid #333"
-              borderRadius="xl"
-              p={6}
-            >
-              <Heading size="md" color="#D4AF37">
-                Manage Events
-              </Heading>
-
-              <Text color="gray.400" mt={3}>
-                View, edit and delete your events.
-              </Text>
-
-              <Button
-                as={Link}
-                to="/organizer/manage-events"
-                mt={5}
-                bg="#D4AF37"
-                color="black"
-              >
-                Manage Events
-              </Button>
-            </Box>
-
-            <Box
-              bg="#111"
-              border="1px solid #333"
-              borderRadius="xl"
-              p={6}
-            >
-              <Heading size="md" color="#D4AF37">
-                Attendees
-              </Heading>
-
-              <Text color="gray.400" mt={3}>
-                View attendees who booked your events.
-              </Text>
-
-              <Button
-                as={Link}
-                to="/organizer/attendees"
-                mt={5}
-                bg="#D4AF37"
-                color="black"
-              >
-                View Attendees
-              </Button>
-            </Box>
-          </Grid>
-        </VStack>
-      </Container>
-    </Box>
-  );
+  const [events, setEvents] = useState([]); const [error, setError] = useState("");
+  useEffect(() => { api.get("/events/organizer/my-events").then(({ data }) => setEvents(data.events || [])).catch((e) => setError(e.response?.data?.message || "Could not load dashboard.")); }, []);
+  const seats = events.reduce((sum, e) => sum + Number(e.totalSeats || 0) - Number(e.availableSeats || 0), 0);
+  return <main style={page}><div style={{ maxWidth: 1150, margin: "0 auto" }}><p style={{ color: gold, letterSpacing: 3, fontSize: 12 }}>ORGANIZER STUDIO</p><h1 style={{ fontSize: 42, margin: "8px 0" }}>Your events. Your audience.</h1><p style={{ color: "#aaa" }}>Manage events stored in MongoDB and publish them directly to attendees.</p><div style={grid}><Stat label="Events created" value={events.length}/><Stat label="Tickets allocated" value={events.reduce((s,e)=>s+Number(e.totalSeats||0),0)}/><Stat label="Tickets booked" value={seats}/></div>{error && <p style={{ color: "#ff9b9b" }}>{error}</p>}<div style={{ display: "flex", gap: 12, flexWrap: "wrap", margin: "28px 0" }}><Link to="/organizer/create" style={button}>+ Create event</Link><Link to="/organizer/manage-events" style={outline}>Manage events</Link><Link to="/organizer/attendees" style={outline}>View attendees</Link></div><h2 style={{ fontSize: 24, marginBottom: 14 }}>Recent events</h2>{events.slice(0,4).map((e)=><article key={e._id} style={card}><strong>{e.title}</strong><p style={{ color: "#aaa", marginTop: 6 }}>{e.city} · {new Date(e.date).toLocaleDateString("en-IN")} · {e.availableSeats} seats left</p></article>)}{!events.length && <section style={card}><p style={{ color: "#aaa" }}>Your first event will appear here after you create it.</p></section>}</div></main>;
 }
-
+function Stat({ label, value }) { return <div style={card}><p style={{ color: "#aaa", fontSize: 13 }}>{label}</p><h2 style={{ fontSize: 32, color: gold, marginTop: 8 }}>{value}</h2></div>; }
+const page = { minHeight: "100vh", background: "#080808", color: "#f7f4ed", padding: "38px clamp(16px,5vw,72px) 70px" }; const grid = { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 14, marginTop: 26 }; const card = { background: "#111", border: "1px solid #3b3320", borderRadius: 14, padding: 20, marginBottom: 12 }; const button = { background: gold, color: "#080808", padding: "12px 16px", borderRadius: 9, textDecoration: "none", fontWeight: 800 }; const outline = { color: gold, border: "1px solid #514626", padding: "12px 16px", borderRadius: 9, textDecoration: "none", fontWeight: 700 };

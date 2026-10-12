@@ -1,3 +1,4 @@
+
 /* =========================
    NAVBAR
 ========================= */
@@ -90,7 +91,6 @@
   color: #d4af37;
 }
 
-
 /* =========================
    REGISTER BUTTON
    BLACK INSTEAD OF GOLD
@@ -98,13 +98,10 @@
 
 .navbar-register {
   padding: 10px 18px !important;
-
   background: #151515 !important;
   color: #ffffff !important;
-
   border: 1px solid #444 !important;
   border-radius: 7px;
-
   text-decoration: none;
   transition: 0.25s ease;
 }
@@ -112,12 +109,9 @@
 .navbar-register:hover {
   background: #0a0a0a !important;
   color: #ffffff !important;
-
   border-color: #777 !important;
-
   transform: translateY(-1px);
 }
-
 
 /* =========================
    USER
@@ -192,7 +186,6 @@
   display: none;
 }
 
-
 /* =========================
    HOME HERO
 ========================= */
@@ -248,15 +241,10 @@
 
 .hero-title {
   margin: 0;
-
   color: #fff;
-
   font-family: "Playfair Display", serif;
-
   font-size: clamp(55px, 8vw, 105px);
-
   line-height: 0.95;
-
   letter-spacing: -4px;
 }
 
@@ -267,33 +255,21 @@
 
 .hero-description {
   max-width: 650px;
-
   margin: 30px 0;
-
   color: #c3c3c3;
-
   font-size: 17px;
-
   line-height: 1.8;
 }
 
 .home-search {
   max-width: 650px;
-
   min-height: 60px;
-
   display: flex;
-
   align-items: center;
-
   gap: 13px;
-
   padding: 7px 8px 7px 20px;
-
   background: rgba(20, 20, 20, 0.95);
-
   border: 1px solid rgba(212, 175, 55, 0.3);
-
   border-radius: 9px;
 }
 
@@ -303,17 +279,11 @@
 
 .home-search input {
   flex: 1;
-
   min-width: 0;
-
   border: 0;
-
   outline: 0;
-
   background: transparent;
-
   color: #fff;
-
   font-size: 14px;
 }
 
@@ -323,36 +293,25 @@
 
 .home-search button {
   border: 0;
-
   background: #d4af37;
-
   color: #050505;
-
   padding: 13px 23px;
-
   border-radius: 6px;
-
   font-weight: 800;
-
   cursor: pointer;
 }
 
 .hero-buttons {
   display: flex;
-
   gap: 14px;
-
   margin-top: 24px;
 }
 
 .hero-buttons a {
   display: inline-flex;
-
   align-items: center;
-
   gap: 10px;
 }
-
 
 /* =========================
    HERO SCROLL
@@ -360,60 +319,37 @@
 
 .hero-scroll {
   position: absolute;
-
   bottom: 28px;
-
   left: 50%;
-
   transform: translateX(-50%);
-
   display: flex;
-
   align-items: center;
-
   gap: 10px;
-
   color: #777;
-
   font-size: 11px;
-
   letter-spacing: 2px;
-
   text-transform: uppercase;
 }
 
 .hero-scroll span {
   width: 25px;
-
   height: 40px;
-
   border: 1px solid #555;
-
   border-radius: 20px;
-
   position: relative;
 }
 
 .hero-scroll span::after {
   content: "";
-
   position: absolute;
-
   top: 7px;
-
   left: 50%;
-
   transform: translateX(-50%);
-
   width: 4px;
-
   height: 7px;
-
   border-radius: 4px;
-
   background: #d4af37;
 }
-
 
 /* =========================
    HOME STATS
@@ -421,29 +357,21 @@
 
 .stats-section {
   background: #0b0b0b;
-
   border-top: 1px solid #222;
-
   border-bottom: 1px solid #222;
 }
 
 .home-stats {
   display: grid;
-
   grid-template-columns: repeat(4, 1fr);
 }
 
 .home-stat {
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 15px;
-
   padding: 30px 15px;
-
   border-right: 1px solid #222;
 }
 
@@ -453,30 +381,24 @@
 
 .home-stat > svg {
   color: #d4af37;
-
   font-size: 25px;
 }
 
 .home-stat div {
   display: flex;
-
   flex-direction: column;
 }
 
 .home-stat strong {
   color: #fff;
-
   font-size: 23px;
 }
 
 .home-stat span {
   color: #777;
-
   font-size: 12px;
-
   margin-top: 2px;
 }
-
 
 /* =========================
    FEATURED
@@ -484,29 +406,19 @@
 
 .section-heading-row {
   display: flex;
-
   align-items: flex-end;
-
   justify-content: space-between;
-
   gap: 30px;
-
   margin-bottom: 40px;
 }
 
 .view-all-link {
   display: flex;
-
   align-items: center;
-
   gap: 9px;
-
   color: #d4af37;
-
   text-decoration: none;
-
   font-size: 14px;
-
   font-weight: 700;
 }
 
@@ -516,66 +428,46 @@
 
 .demo-notice {
   margin-bottom: 25px;
-
   padding: 12px 15px;
-
   border: 1px solid rgba(212, 175, 55, 0.2);
-
   background: rgba(212, 175, 55, 0.05);
-
   color: #aaa;
-
   font-size: 13px;
-
   border-radius: 6px;
 }
 
 .home-loading {
   min-height: 250px;
-
   display: grid;
-
   place-items: center;
-
   color: #d4af37;
 }
 
 .empty-home {
   min-height: 300px;
-
   display: flex;
-
   align-items: center;
-
   flex-direction: column;
-
   justify-content: center;
-
   gap: 12px;
-
   border: 1px solid #222;
-
   background: #0b0b0b;
-
   text-align: center;
 }
 
 .empty-home > svg {
   color: #d4af37;
-
   font-size: 40px;
 }
 
 .empty-home h3 {
   color: #fff;
-
   margin: 0;
 }
 
 .empty-home p {
   color: #777;
 }
-
 
 /* =========================
    CATEGORIES
@@ -587,7 +479,6 @@
 
 .center-heading {
   text-align: center;
-
   margin-bottom: 45px;
 }
 
@@ -597,37 +488,25 @@
 
 .category-grid {
   display: grid;
-
   grid-template-columns: repeat(5, 1fr);
-
   gap: 15px;
 }
 
 .category-card {
   height: 290px;
-
   position: relative;
-
   overflow: hidden;
-
   border: 1px solid #252525;
-
   background: #111;
-
   padding: 0;
-
   cursor: pointer;
-
   text-align: left;
 }
 
 .category-card img {
   width: 100%;
-
   height: 100%;
-
   object-fit: cover;
-
   transition: 0.5s ease;
 }
 
@@ -637,7 +516,6 @@
 
 .category-overlay {
   position: absolute;
-
   inset: 0;
 
   background:
@@ -650,52 +528,35 @@
 
 .category-content {
   position: absolute;
-
   left: 20px;
-
   right: 20px;
-
   bottom: 20px;
-
   color: #fff;
 }
 
 .category-icon {
   width: 38px;
-
   height: 38px;
-
   display: grid;
-
   place-items: center;
-
   color: #d4af37;
-
   border: 1px solid #d4af37;
-
   border-radius: 7px;
-
   margin-bottom: 12px;
 }
 
 .category-content h3 {
   margin: 0 0 8px;
-
   font-size: 19px;
 }
 
 .category-content span {
   display: flex;
-
   align-items: center;
-
   gap: 7px;
-
   color: #aaa;
-
   font-size: 12px;
 }
-
 
 /* =========================
    WHY EVENTIX
@@ -707,88 +568,63 @@
 
 .why-grid {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   gap: 90px;
-
   align-items: center;
 }
 
 .why-content p {
   color: #999;
-
   line-height: 1.8;
-
   max-width: 580px;
 }
 
 .why-content .btn-gold {
   display: inline-flex;
-
   align-items: center;
-
   gap: 10px;
-
   margin-top: 15px;
 }
 
 .why-features {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   gap: 15px;
 }
 
 .why-feature {
   padding: 28px;
-
   background: #0c0c0c;
-
   border: 1px solid #222;
-
   transition: 0.3s ease;
 }
 
 .why-feature:hover {
   border-color: rgba(212, 175, 55, 0.5);
-
   transform: translateY(-4px);
 }
 
 .why-icon {
   width: 43px;
-
   height: 43px;
-
   display: grid;
-
   place-items: center;
-
   margin-bottom: 20px;
-
   color: #d4af37;
-
   border: 1px solid rgba(212, 175, 55, 0.5);
 }
 
 .why-feature h3 {
   color: #fff;
-
   margin: 0 0 8px;
 }
 
 .why-feature p {
   margin: 0;
-
   color: #777;
-
   font-size: 13px;
-
   line-height: 1.6;
 }
-
 
 /* =========================
    ORGANIZER CTA
@@ -805,46 +641,34 @@
     );
 
   border-top: 1px solid #222;
-
   border-bottom: 1px solid #222;
 }
 
 .organizer-cta-content {
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   gap: 30px;
 }
 
 .organizer-cta h2 {
   color: #fff;
-
   font-family: "Playfair Display", serif;
-
   font-size: 38px;
-
   margin: 0 0 10px;
 }
 
 .organizer-cta p {
   color: #888;
-
   margin: 0;
 }
 
 .organizer-cta .btn-gold {
   display: inline-flex;
-
   align-items: center;
-
   gap: 10px;
-
   white-space: nowrap;
 }
-
 
 /* =========================
    FOOTER
@@ -852,99 +676,70 @@
 
 .footer {
   background: #030303;
-
   border-top: 1px solid #222;
-
   padding-top: 65px;
 }
 
 .footer-grid {
   display: grid;
-
   grid-template-columns: 2fr 1fr 1fr 1fr;
-
   gap: 50px;
-
   padding-bottom: 50px;
 }
 
 .footer-logo {
   color: #fff;
-
   font-size: 26px;
-
   font-weight: 800;
-
   letter-spacing: 2px;
-
   text-decoration: none;
 }
 
 .footer-brand p {
   max-width: 350px;
-
   color: #777;
-
   line-height: 1.8;
-
   font-size: 13px;
-
   margin: 20px 0;
 }
 
 .footer-socials {
   display: flex;
-
   gap: 10px;
 }
 
 .footer-socials a {
   width: 36px;
-
   height: 36px;
-
   display: grid;
-
   place-items: center;
-
   color: #999;
-
   border: 1px solid #292929;
-
   text-decoration: none;
-
   transition: 0.25s ease;
 }
 
 .footer-socials a:hover {
   color: #d4af37;
-
   border-color: #d4af37;
 }
 
 .footer-column {
   display: flex;
-
   flex-direction: column;
-
   gap: 12px;
 }
 
 .footer-column h3 {
   color: #fff;
-
   margin: 0 0 10px;
-
   font-size: 15px;
 }
 
 .footer-column a {
   color: #777;
-
   text-decoration: none;
-
   font-size: 13px;
-
   transition: 0.2s;
 }
 
@@ -954,35 +749,24 @@
 
 .footer-bottom {
   min-height: 70px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   border-top: 1px solid #1c1c1c;
 }
 
 .footer-bottom p {
   color: #555;
-
   font-size: 12px;
-
   margin: 0;
 }
 
 .back-to-top {
   width: 38px;
-
   height: 38px;
-
   border: 1px solid #333;
-
   background: transparent;
-
   color: #d4af37;
-
   cursor: pointer;
 }
 
@@ -990,20 +774,17 @@
   border-color: #d4af37;
 }
 
-
 /* =========================
    RESPONSIVE
 ========================= */
 
 @media (max-width: 1100px) {
-
   .navbar-links {
     gap: 2px;
   }
 
   .nav-link {
     padding: 9px;
-
     font-size: 12px;
   }
 
@@ -1020,9 +801,7 @@
   }
 }
 
-
 @media (max-width: 800px) {
-
   .navbar-inner {
     min-height: 68px;
   }
@@ -1038,25 +817,15 @@
 
   .navbar-links {
     position: absolute;
-
     top: 68px;
-
     left: 0;
-
     right: 0;
-
     display: none;
-
     flex-direction: column;
-
     align-items: stretch;
-
     gap: 5px;
-
     padding: 18px;
-
     background: #080808;
-
     border-bottom: 1px solid #292929;
   }
 
@@ -1066,42 +835,28 @@
 
   .nav-link {
     padding: 13px;
-
     font-size: 14px;
   }
 
   .navbar-mobile-actions {
     display: flex;
-
     flex-direction: column;
-
     gap: 10px;
-
     margin-top: 10px;
-
     padding-top: 15px;
-
     border-top: 1px solid #222;
   }
 
   .nav-user-mobile,
   .logout-mobile {
     padding: 13px;
-
     display: flex;
-
     align-items: center;
-
     gap: 8px;
-
     color: #ccc;
-
     background: transparent;
-
     border: 1px solid #292929;
-
     text-decoration: none;
-
     font-size: 14px;
   }
 
@@ -1147,21 +902,17 @@
 
   .organizer-cta-content {
     flex-direction: column;
-
     align-items: flex-start;
   }
 }
 
-
 @media (max-width: 550px) {
-
   .navbar-logo {
     font-size: 21px;
   }
 
   .logo-icon {
     width: 32px;
-
     height: 32px;
   }
 
@@ -1195,7 +946,6 @@
 
   .home-stat {
     padding: 22px 8px;
-
     gap: 9px;
   }
 
@@ -1213,7 +963,6 @@
 
   .section-heading-row {
     align-items: flex-start;
-
     flex-direction: column;
   }
 
@@ -1235,7 +984,6 @@
 
   .footer-grid {
     grid-template-columns: 1fr;
-
     gap: 35px;
   }
 
@@ -1243,7 +991,6 @@
     padding: 15px 0;
   }
 }
-
 
 /* =========================
    NOTIFICATION BELL
@@ -1255,129 +1002,81 @@
 
 .notification-button {
   position: relative;
-
   width: 38px;
-
   height: 38px;
-
   display: grid;
-
   place-items: center;
-
   border: 1px solid #292929;
-
   border-radius: 50%;
-
   background: transparent;
-
   color: #aaa;
-
   cursor: pointer;
-
   transition: 0.25s ease;
 }
 
 .notification-button:hover {
   color: #d4af37;
-
   border-color: #d4af37;
 }
 
 .notification-count {
   position: absolute;
-
   top: -5px;
-
   right: -5px;
-
   min-width: 17px;
-
   height: 17px;
-
   padding: 0 4px;
-
   display: grid;
-
   place-items: center;
-
   border-radius: 20px;
-
   background: #d4af37;
-
   color: #050505;
-
   font-size: 9px;
-
   font-weight: 900;
-
   border: 2px solid #050505;
 }
 
 .notification-panel {
   position: absolute;
-
   top: 50px;
-
   right: 0;
-
   width: 370px;
-
   max-height: 500px;
-
   overflow: hidden;
-
   background: #101010;
-
   border: 1px solid #292929;
-
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-
   z-index: 2000;
 }
 
 .notification-header {
   min-height: 70px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   padding: 15px 18px;
-
   border-bottom: 1px solid #252525;
 }
 
 .notification-header h3 {
   margin: 0 0 4px;
-
   color: #fff;
-
   font-size: 16px;
 }
 
 .notification-header span {
   color: #777;
-
   font-size: 11px;
 }
 
 .notification-close {
   width: 30px;
-
   height: 30px;
-
   display: grid;
-
   place-items: center;
-
   border: 0;
-
   background: transparent;
-
   color: #777;
-
   cursor: pointer;
 }
 
@@ -1387,23 +1086,16 @@
 
 .notification-list {
   max-height: 425px;
-
   overflow-y: auto;
 }
 
 .notification-item {
   position: relative;
-
   display: flex;
-
   gap: 12px;
-
   padding: 17px;
-
   border-bottom: 1px solid #1d1d1d;
-
   cursor: pointer;
-
   transition: 0.2s ease;
 }
 
@@ -1417,107 +1109,74 @@
 
 .notification-icon {
   width: 37px;
-
   height: 37px;
-
   flex-shrink: 0;
-
   display: grid;
-
   place-items: center;
-
   color: #d4af37;
-
   background: rgba(212, 175, 55, 0.08);
-
   border: 1px solid rgba(212, 175, 55, 0.2);
-
   border-radius: 50%;
 }
 
 .notification-content {
   flex: 1;
-
   min-width: 0;
 }
 
 .notification-content h4 {
   margin: 0 0 5px;
-
   color: #fff;
-
   font-size: 13px;
 }
 
 .notification-content p {
   margin: 0 0 7px;
-
   color: #999;
-
   font-size: 12px;
-
   line-height: 1.5;
 }
 
 .notification-content small {
   color: #555;
-
   font-size: 10px;
 }
 
 .notification-dot {
   width: 7px;
-
   height: 7px;
-
   flex-shrink: 0;
-
   margin-top: 6px;
-
   border-radius: 50%;
-
   background: #d4af37;
 }
 
 .notification-empty {
   min-height: 220px;
-
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
-
   padding: 30px;
-
   text-align: center;
 }
 
 .notification-empty > svg {
   color: #d4af37;
-
   font-size: 30px;
-
   margin-bottom: 15px;
 }
 
 .notification-empty h4 {
   margin: 0 0 7px;
-
   color: #fff;
 }
 
 .notification-empty p {
   max-width: 250px;
-
   margin: 0;
-
   color: #666;
-
   font-size: 12px;
-
   line-height: 1.6;
 }
 
@@ -1525,22 +1184,15 @@
   display: none;
 }
 
-
 /* MOBILE NOTIFICATIONS */
 
 @media (max-width: 550px) {
-
   .notification-panel {
     position: fixed;
-
     top: 68px;
-
     left: 10px;
-
     right: 10px;
-
     width: auto;
-
     max-height: calc(100vh - 90px);
   }
 
@@ -1549,37 +1201,28 @@
   }
 }
 
-
 /* =========================
    AUTH PAGES
 ========================= */
 
 .auth-page {
   min-height: calc(100vh - 76px);
-
   background: #050505;
-
   display: flex;
-
   align-items: stretch;
 }
 
 .auth-container {
   width: 100%;
-
   min-height: calc(100vh - 76px);
-
   display: grid;
-
   grid-template-columns: 1fr 1fr;
 }
-
 
 /* LEFT */
 
 .auth-visual {
   position: relative;
-
   overflow: hidden;
 
   background:
@@ -1594,7 +1237,6 @@
 
 .auth-visual-overlay {
   position: absolute;
-
   inset: 0;
 
   background:
@@ -1607,35 +1249,22 @@
 
 .auth-visual-content {
   position: relative;
-
   z-index: 2;
-
   height: 100%;
-
   padding: 70px;
-
   display: flex;
-
   flex-direction: column;
-
   justify-content: center;
 }
 
 .auth-logo {
   position: absolute;
-
   top: 35px;
-
   left: 70px;
-
   color: #fff;
-
   text-decoration: none;
-
   font-size: 26px;
-
   font-weight: 900;
-
   letter-spacing: 3px;
 }
 
@@ -1646,13 +1275,9 @@
 
 .auth-visual-content h1 {
   margin: 20px 0;
-
   color: #fff;
-
   font-family: "Playfair Display", serif;
-
   font-size: clamp(50px, 5vw, 78px);
-
   line-height: 0.98;
 }
 
@@ -1662,46 +1287,32 @@
 
 .auth-visual-content p {
   max-width: 500px;
-
   color: #aaa;
-
   line-height: 1.8;
-
   font-size: 15px;
 }
-
 
 /* RIGHT */
 
 .auth-form-section {
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   padding: 60px 40px;
-
   background: #080808;
 }
 
 .auth-form-container {
   width: 100%;
-
   max-width: 450px;
 }
 
 .auth-mobile-logo {
   display: none;
-
   margin-bottom: 40px;
-
   color: #fff;
-
   font-size: 25px;
-
   font-weight: 900;
-
   letter-spacing: 3px;
 }
 
@@ -1711,59 +1322,44 @@
 
 .auth-heading h2 {
   margin: 5px 0 10px;
-
   color: #fff;
-
   font-family: "Playfair Display", serif;
-
   font-size: 42px;
 }
 
 .auth-heading p {
   margin: 0;
-
   color: #777;
-
   font-size: 14px;
 }
 
 .auth-form {
   display: flex;
-
   flex-direction: column;
-
   gap: 23px;
 }
 
 .auth-input-group {
   display: flex;
-
   flex-direction: column;
-
   gap: 9px;
 }
 
 .auth-input-group label {
   color: #ddd;
-
   font-size: 13px;
-
   font-weight: 600;
 }
 
 .auth-label-row {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
 }
 
 .auth-label-row a {
   color: #d4af37;
-
   font-size: 11px;
-
   text-decoration: none;
 }
 
@@ -1773,51 +1369,34 @@
 
 .auth-input-wrapper {
   height: 54px;
-
   display: flex;
-
   align-items: center;
-
   gap: 12px;
-
   padding: 0 16px;
-
   background: #111;
-
   border: 1px solid #292929;
-
   border-radius: 7px;
-
   transition: 0.25s ease;
 }
 
 .auth-input-wrapper:focus-within {
   border-color: #d4af37;
-
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.07);
 }
 
 .auth-input-wrapper > svg {
   flex-shrink: 0;
-
   color: #777;
-
   font-size: 14px;
 }
 
 .auth-input-wrapper input {
   flex: 1;
-
   width: 100%;
-
   border: 0;
-
   outline: 0;
-
   background: transparent;
-
   color: #fff;
-
   font-size: 14px;
 }
 
@@ -1827,13 +1406,9 @@
 
 .password-toggle {
   border: 0;
-
   background: transparent;
-
   color: #666;
-
   cursor: pointer;
-
   font-size: 15px;
 }
 
@@ -1841,64 +1416,43 @@
   color: #d4af37;
 }
 
-
 /* =========================
    AUTH SUBMIT BUTTON
 ========================= */
 
 .auth-submit-button {
   width: 100%;
-
   height: 54px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 10px;
-
   border: 0;
-
   border-radius: 7px;
-
   background: #d4af37;
-
   color: #050505;
-
   font-size: 14px;
-
   font-weight: 800;
-
   cursor: pointer;
-
   transition: 0.25s ease;
 }
 
 .auth-submit-button:hover:not(:disabled) {
   background: #f0ce63;
-
   transform: translateY(-1px);
 }
 
 .auth-submit-button:disabled {
   opacity: 0.7;
-
   cursor: not-allowed;
 }
 
 .login-spinner {
   width: 16px;
-
   height: 16px;
-
   border: 2px solid rgba(0, 0, 0, 0.25);
-
   border-top-color: #050505;
-
   border-radius: 50%;
-
   animation: loginSpin 0.7s linear infinite;
 }
 
@@ -1908,30 +1462,22 @@
   }
 }
 
-
 /* =========================
    REGISTER
 ========================= */
 
 .auth-register {
   display: flex;
-
   justify-content: center;
-
   gap: 7px;
-
   margin-top: 27px;
-
   color: #666;
-
   font-size: 13px;
 }
 
 .auth-register a {
   color: #d4af37;
-
   text-decoration: none;
-
   font-weight: 700;
 }
 
@@ -1941,41 +1487,28 @@
 
 .auth-divider {
   display: flex;
-
   align-items: center;
-
   gap: 15px;
-
   margin: 35px 0 18px;
-
   color: #333;
-
   font-size: 9px;
-
   letter-spacing: 3px;
 }
 
 .auth-divider::before,
 .auth-divider::after {
   content: "";
-
   flex: 1;
-
   height: 1px;
-
   background: #222;
 }
 
 .auth-footer-text {
   color: #555;
-
   text-align: center;
-
   font-size: 10px;
-
   line-height: 1.7;
 }
-
 
 /* =========================
    LOGIN NOTIFICATION
@@ -1983,30 +1516,18 @@
 
 .auth-notification {
   position: fixed;
-
   top: 95px;
-
   right: 25px;
-
   z-index: 5000;
-
   width: min(390px, calc(100vw - 30px));
-
   display: flex;
-
   align-items: center;
-
   gap: 12px;
-
   padding: 15px 17px;
-
   background: #141414;
-
   border: 1px solid #333;
-
   box-shadow:
     0 15px 50px rgba(0, 0, 0, 0.55);
-
   animation:
     notificationSlide 0.3s ease;
 }
@@ -2014,13 +1535,11 @@
 @keyframes notificationSlide {
   from {
     opacity: 0;
-
     transform: translateX(40px);
   }
 
   to {
     opacity: 1;
-
     transform: translateX(0);
   }
 }
@@ -2035,17 +1554,11 @@
 
 .auth-notification-icon {
   width: 35px;
-
   height: 35px;
-
   flex-shrink: 0;
-
   display: grid;
-
   place-items: center;
-
   border-radius: 50%;
-
   background: #222;
 }
 
@@ -2059,35 +1572,26 @@
 
 .auth-notification-content {
   flex: 1;
-
   display: flex;
-
   flex-direction: column;
-
   gap: 3px;
 }
 
 .auth-notification-content strong {
   color: #fff;
-
   font-size: 13px;
 }
 
 .auth-notification-content span {
   color: #999;
-
   font-size: 11px;
-
   line-height: 1.4;
 }
 
 .auth-notification > button {
   border: 0;
-
   background: transparent;
-
   color: #666;
-
   cursor: pointer;
 }
 
@@ -2095,13 +1599,11 @@
   color: #fff;
 }
 
-
 /* =========================
    AUTH RESPONSIVE
 ========================= */
 
 @media (max-width: 900px) {
-
   .auth-container {
     grid-template-columns: 1fr;
   }
@@ -2117,12 +1619,9 @@
   .auth-mobile-logo {
     display: block;
   }
-
 }
 
-
 @media (max-width: 550px) {
-
   .auth-form-section {
     padding: 40px 20px;
   }
@@ -2133,11 +1632,10 @@
 
   .auth-notification {
     top: 80px;
-
     right: 15px;
   }
-
 }
+
 /* =========================================================
    EVENTIX HOME PAGE
    USER-COMFORT PREMIUM DESIGN
@@ -2911,6 +2409,7 @@
   min-height: 520px;
   display: flex;
   align-items: center;
+
   background:
     url("https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=2000&q=85")
       center / cover;
@@ -2919,6 +2418,7 @@
 .home-organizer-overlay {
   position: absolute;
   inset: 0;
+
   background:
     linear-gradient(
       90deg,
@@ -3151,6 +2651,7 @@
     grid-template-columns: 1fr;
   }
 }
+
 /* ================================
    SIMPLE HOME PAGE
 ================================ */
@@ -3164,12 +2665,9 @@
 .simple-home-hero {
   min-height: calc(100vh - 76px);
   position: relative;
-
   display: flex;
   align-items: center;
-
   padding: 80px 8%;
-
   overflow: hidden;
 
   background:
@@ -3193,26 +2691,18 @@
 
 .simple-home-label {
   display: inline-block;
-
   color: #d4af37;
-
   font-size: 14px;
   font-weight: 700;
-
   letter-spacing: 5px;
-
   margin-bottom: 25px;
 }
 
 .simple-home-content h1 {
   margin: 0;
-
   font-size: clamp(52px, 7vw, 92px);
-
   line-height: 0.98;
-
   font-weight: 800;
-
   letter-spacing: -3px;
 }
 
@@ -3222,12 +2712,9 @@
 
 .simple-home-content p {
   max-width: 520px;
-
   margin-top: 30px;
   margin-bottom: 35px;
-
   color: #b8b8b8;
-
   font-size: 17px;
   line-height: 1.7;
 }
@@ -3236,74 +2723,54 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-
   padding: 15px 25px;
-
   border: 1px solid #d4af37;
   border-radius: 6px;
-
   background: #d4af37;
   color: #050505;
-
   font-size: 15px;
   font-weight: 700;
-
   cursor: pointer;
-
   transition: 0.25s ease;
 }
 
 .simple-home-button:hover {
   background: #f0d66d;
   border-color: #f0d66d;
-
   transform: translateY(-2px);
 }
 
 .simple-home-number {
   position: absolute;
-
   right: 8%;
   bottom: 70px;
-
   z-index: 2;
-
   text-align: right;
 }
 
 .simple-home-number span {
   display: block;
-
   color: #d4af37;
-
   font-size: 42px;
   font-weight: 700;
-
   line-height: 1;
 }
 
 .simple-home-number p {
   margin: 8px 0 0;
-
   color: #aaaaaa;
-
   font-size: 13px;
-
   letter-spacing: 1px;
 }
-
 
 /* ================================
    MOBILE
 ================================ */
 
 @media (max-width: 768px) {
-
   .simple-home-hero {
     min-height: calc(100vh - 70px);
-
     padding: 60px 25px;
-
     background-position: center;
   }
 
@@ -3334,6 +2801,7 @@
     padding: 14px 20px;
   }
 }
+
 /* =========================================
    AUTH PAGE NAVIGATION
 ========================================= */
@@ -3364,13 +2832,67 @@
   color: #d4af37;
 }
 
+/* =========================================
+   LOGIN + REGISTER TOP MENU
+   ONLY ADDITION
+========================================= */
+
+.auth-top-menu {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 28px;
+
+  z-index: 5000;
+}
+
+.auth-menu-link {
+  color: #ffffff;
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+
+  transition: color 0.25s ease;
+}
+
+.auth-menu-link:hover {
+  color: #d4af37;
+}
+.account-type-options {
+  display: flex;
+  align-items: stretch;
+  gap: 30px; /* space between Attendee and Organizer */
+  width: 100%;
+}
+
+.account-type-option {
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 15px 18px;
+
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.03);
+
+  cursor: pointer;
+}
 
 /* =========================================
    DESKTOP
 ========================================= */
 
 @media (min-width: 769px) {
-
   .navbar-links {
     display: flex !important;
     align-items: center;
@@ -3383,16 +2905,13 @@
   .navbar-mobile-actions {
     display: none !important;
   }
-
 }
-
 
 /* =========================================
    MOBILE
 ========================================= */
 
 @media (max-width: 768px) {
-
   .navbar-links {
     display: none;
   }
@@ -3408,5 +2927,4 @@
     width: 100%;
     gap: 15px;
   }
-
 }

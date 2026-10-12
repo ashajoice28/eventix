@@ -1,200 +1,30 @@
-import { useState } from "react";
-import {
-  Box,
-  Button,
-  Separator,
-  Flex,
-  Grid,
-  Heading,
-  HStack,
-  Image,
-  Input,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-
-import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
-
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
+const gold = "#d4af37";
 export default function Booking() {
-  const [tickets, setTickets] = useState(1);
-
-  const event = {
-    title: "Neon Music Festival",
-    image:
-      "https://images.unsplash.com/photo-1501386761578-eac5c94b800a",
-    date: "12 October 2026",
-    time: "6:00 PM",
-    venue: "Chennai Trade Centre",
-    price: 999,
+  const { id } = useParams(); const navigate = useNavigate(); const { user } = useAuth();
+  const [event, setEvent] = useState(null); const [tickets, setTickets] = useState(1); const [loading, setLoading] = useState(true); const [error, setError] = useState("");
+  useEffect(() => { api.get(`/events/${id}`).then(({ data }) => setEvent(data.event)).catch((e) => setError(e.response?.data?.message || "Could not load event.")).finally(() => setLoading(false)); }, [id]);
+  if (loading) return <div style={page}>Loading booking details…</div>;
+  if (!event) return <div style={page}><h2>{error || "Event not found"}</h2><Link to="/events">Browse events</Link></div>;
+  if (user?.role !== "attendee") return <div style={page}><h2>Attendee account required</h2><p>Log in with an attendee account to book tickets.</p><Link to="/login" style={button}>Login</Link></div>;
+  const total = Number(event.price) * tickets;
+  const submit = async () => {
+    if (tickets < 1 || tickets > Math.min(10, event.availableSeats)) return setError("Choose a valid ticket quantity.");
+    setError("");
+    if (total === 0) {
+      try { await api.post("/bookings", { eventId: event._id, numberOfTickets: tickets }); navigate("/my-bookings", { replace: true, state: { paymentSuccess: true } }); }
+      catch (e) { setError(e.response?.data?.message || "Could not reserve your free tickets."); }
+      return;
+    }
+    navigate("/payment", { state: { eventId: event._id, tickets } });
   };
-
-  const total = event.price * tickets;
-
-  return (
-    <Box bg="#F5F3FF" minH="100vh" p={8}>
-      <Heading color="#2D1B69" mb={8}>
-        Book Tickets
-      </Heading>
-
-      <Grid
-        templateColumns={{
-          base: "1fr",
-          lg: "1.5fr 1fr",
-        }}
-        gap={8}
-      >
-        {/* Left Section */}
-        <Box
-          bg="white"
-          p={6}
-          borderRadius="2xl"
-          boxShadow="lg"
-        >
-          <Image
-            src={event.image}
-            h="250px"
-            w="100%"
-            objectFit="cover"
-            borderRadius="xl"
-          />
-
-          <VStack align="start" mt={5} gap={3}>
-            <Heading size="lg">
-              {event.title}
-            </Heading>
-
-            <HStack color="gray.600">
-              <FaCalendarAlt />
-              <Text>
-                {event.date} • {event.time}
-              </Text>
-            </HStack>
-
-            <HStack color="gray.600">
-              <FaMapMarkerAlt />
-              <Text>{event.venue}</Text>
-            </HStack>
-
-            <Separator width="100%" />
-
-            <Text fontWeight="bold">
-              Attendee Name
-            </Text>
-
-            <Input
-              placeholder="Enter your name"
-            />
-
-            <Text fontWeight="bold">
-              Email
-            </Text>
-
-            <Input
-              type="email"
-              placeholder="Enter your email"
-            />
-
-            <Text fontWeight="bold">
-              Phone Number
-            </Text>
-
-            <Input
-              type="tel"
-              placeholder="Enter phone number"
-            />
-
-            <Text fontWeight="bold">
-              Number of Tickets
-            </Text>
-
-            <HStack>
-              <Button
-                onClick={() =>
-                  tickets > 1 &&
-                  setTickets(tickets - 1)
-                }
-              >
-                -
-              </Button>
-
-              <Box
-                px={6}
-                py={2}
-                bg="gray.100"
-                borderRadius="lg"
-                fontWeight="bold"
-              >
-                {tickets}
-              </Box>
-
-              <Button
-                onClick={() =>
-                  setTickets(tickets + 1)
-                }
-              >
-                +
-              </Button>
-            </HStack>
-          </VStack>
-        </Box>
-
-        {/* Right Section */}
-        <Box
-          bg="white"
-          p={6}
-          borderRadius="2xl"
-          boxShadow="lg"
-          h="fit-content"
-        >
-          <Heading size="md" mb={5}>
-            Booking Summary
-          </Heading>
-
-          <VStack
-            gap={4}
-            align="stretch"
-          >
-            <Flex justify="space-between">
-              <Text>Ticket Price</Text>
-              <Text>₹ {event.price}</Text>
-            </Flex>
-
-            <Flex justify="space-between">
-              <Text>Quantity</Text>
-              <Text>{tickets}</Text>
-            </Flex>
-
-            <Flex justify="space-between">
-              <Text>Service Fee</Text>
-              <Text>₹ 50</Text>
-            </Flex>
-
-            <Separator />
-
-            <Flex justify="space-between">
-              <Heading size="md">
-                Total
-              </Heading>
-
-              <Heading
-                size="md"
-                color="purple.600"
-              >
-                ₹ {total + 50}
-              </Heading>
-            </Flex>
-
-            <Button
-              colorPalette="purple"
-              size="lg"
-              borderRadius="xl"
-              mt={4}
-            >
-              Confirm Booking
-            </Button>
-          </VStack>
-        </Box>
-      </Grid>
-    </Box>
-  );
+  return <main style={page}><div style={{ maxWidth: 900, margin: "0 auto" }}><Link to={`/events/${event._id}`} style={{ color: gold }}>← Event details</Link><h1 style={{ fontSize: 36, margin: "18px 0" }}>Book your tickets</h1><section style={card}><h2>{event.title}</h2><p style={muted}>📍 {event.venue}, {event.city}</p><p style={muted}>📅 {new Date(event.date).toLocaleDateString("en-IN", { dateStyle: "long" })} · {event.time}</p><hr style={divider}/><label htmlFor="ticket-count" style={{ display: "block", marginBottom: 10 }}>Number of tickets</label><select id="ticket-count" value={tickets} onChange={(e) => { setTickets(Number(e.target.value)); setError(""); }} style={input}>{Array.from({ length: Math.max(1, Math.min(10, event.availableSeats)) }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} {n === 1 ? "ticket" : "tickets"}</option>)}</select><div style={{ display: "flex", justifyContent: "space-between", margin: "24px 0" }}><span style={muted}>Ticket price × {tickets}</span><strong>₹{total.toLocaleString("en-IN")}</strong></div><div style={{ display: "flex", justifyContent: "space-between", fontSize: 23, borderTop: "1px solid #3b3320", paddingTop: 18 }}><strong>Total</strong><strong style={{ color: gold }}>{total === 0 ? "Free" : `₹${total.toLocaleString("en-IN")}`}</strong></div>{error && <p role="alert" style={{ color: "#ff8585" }}>{error}</p>}<button onClick={submit} style={button} disabled={event.availableSeats < 1}>{total === 0 ? "Continue to reserve" : "Continue to secure payment"}</button><p style={{ color: "#888", fontSize: 12, marginTop: 14 }}>Your ticket is confirmed only after the server verifies payment.</p></section></div></main>;
 }
+const page = { minHeight: "100vh", background: "#080808", color: "#f7f4ed", padding: "32px 18px 70px" };
+const card = { maxWidth: 650, background: "#111", border: "1px solid #3b3320", borderRadius: 18, padding: "clamp(20px,5vw,36px)", marginTop: 20 };
+const muted = { color: "#aaa" }; const divider = { border: 0, borderTop: "1px solid #29251a", margin: "22px 0" };
+const input = { width: "100%", padding: 13, background: "#080808", border: "1px solid #48402a", borderRadius: 9, color: "white" };
+const button = { width: "100%", padding: 14, marginTop: 18, border: 0, borderRadius: 10, background: gold, color: "#080808", fontWeight: 800, cursor: "pointer" };

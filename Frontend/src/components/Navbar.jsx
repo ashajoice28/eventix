@@ -15,6 +15,9 @@ import {
   FaTachometerAlt,
   FaPlus,
   FaTicketAlt,
+  FaHeart,
+  FaHome,
+  FaUsers,
 } from "react-icons/fa";
 
 import { useAuth } from "../context/AuthContext";
@@ -40,14 +43,28 @@ export default function Navbar() {
   const navClass = ({ isActive }) =>
     `nav-link ${isActive ? "nav-link-active" : ""}`;
 
-  const isPublicHome = location.pathname === "/";
-  const isUserHome = location.pathname === "/home";
-
   const isLoginPage = location.pathname === "/login";
   const isRegisterPage = location.pathname === "/register";
 
-  const isAuthPage =
-    isLoginPage || isRegisterPage;
+  const isAuthPage = isLoginPage || isRegisterPage;
+
+  const isOrganizer = user?.role === "organizer";
+  const isAttendee = user?.role === "attendee";
+
+  const showUserHomeReturn =
+    location.pathname === "/events" ||
+    location.pathname === "/my-bookings" ||
+    location.pathname === "/favorites";
+
+  /*
+  =========================
+  PROFILE ROUTE
+  =========================
+  */
+
+  const profileRoute = isOrganizer
+    ? "/organizer/profile"
+    : "/profile";
 
   return (
     <header className="navbar">
@@ -58,7 +75,13 @@ export default function Navbar() {
         ========================= */}
 
         <Link
-          to={user ? "/home" : "/"}
+          to={
+            user
+              ? isOrganizer
+                ? "/organizer"
+                : "/home"
+              : "/"
+          }
           className="navbar-logo"
           onClick={closeMenu}
         >
@@ -73,7 +96,7 @@ export default function Navbar() {
 
 
         {/* =========================
-            DESKTOP NAVIGATION
+            NAVIGATION
         ========================= */}
 
         <nav
@@ -84,6 +107,7 @@ export default function Navbar() {
 
           {/* =========================
               LOGIN / REGISTER PAGE
+              UNCHANGED
           ========================= */}
 
           {isAuthPage ? (
@@ -117,36 +141,30 @@ export default function Navbar() {
           ) : (
 
             <>
+
               {/* =========================
-                  HOME + EVENTS
+                  ATTENDEE ONLY
+                  USER HOME
               ========================= */}
 
-              {!isPublicHome && !isUserHome && (
-                <>
-                  <NavLink
-                    to={user ? "/home" : "/"}
-                    className={navClass}
-                    onClick={closeMenu}
-                  >
-                    Home
-                  </NavLink>
-
-                  <NavLink
-                    to="/events"
-                    className={navClass}
-                    onClick={closeMenu}
-                  >
-                    Events
-                  </NavLink>
-                </>
+              {isAttendee && showUserHomeReturn && (
+                <NavLink
+                  to="/home"
+                  className={navClass}
+                  onClick={closeMenu}
+                >
+                  <FaHome />
+                  User Home
+                </NavLink>
               )}
 
 
               {/* =========================
+                  ATTENDEE ONLY
                   MY BOOKINGS
               ========================= */}
 
-              {user && (
+              {isAttendee && (
                 <NavLink
                   to="/my-bookings"
                   className={navClass}
@@ -159,11 +177,32 @@ export default function Navbar() {
 
 
               {/* =========================
-                  ORGANIZER
+                  ATTENDEE ONLY
+                  FAVORITES
               ========================= */}
 
-              {user?.role === "organizer" && (
+              {isAttendee && (
+                <NavLink
+                  to="/favorites"
+                  className={navClass}
+                  onClick={closeMenu}
+                >
+                  <FaHeart />
+                  Favorites
+                </NavLink>
+              )}
+
+
+              {/* =========================
+                  ORGANIZER ONLY
+                  MAIN NAVIGATION
+              ========================= */}
+
+              {isOrganizer && (
                 <>
+
+                  {/* DASHBOARD */}
+
                   <NavLink
                     to="/organizer"
                     className={navClass}
@@ -173,6 +212,9 @@ export default function Navbar() {
                     Dashboard
                   </NavLink>
 
+
+                  {/* CREATE EVENT */}
+
                   <NavLink
                     to="/organizer/create"
                     className={navClass}
@@ -181,6 +223,31 @@ export default function Navbar() {
                     <FaPlus />
                     Create Event
                   </NavLink>
+
+
+                  {/* MANAGE EVENTS */}
+
+                  <NavLink
+                    to="/organizer/manage-events"
+                    className={navClass}
+                    onClick={closeMenu}
+                  >
+                    <FaCalendarAlt />
+                    Manage Events
+                  </NavLink>
+
+
+                  {/* ATTENDEES */}
+
+                  <NavLink
+                    to="/organizer/attendees"
+                    className={navClass}
+                    onClick={closeMenu}
+                  >
+                    <FaUsers />
+                    Attendees
+                  </NavLink>
+
                 </>
               )}
 
@@ -199,6 +266,7 @@ export default function Navbar() {
                   Admin
                 </NavLink>
               )}
+
             </>
           )}
 
@@ -211,8 +279,9 @@ export default function Navbar() {
 
             {user ? (
               <>
+
                 <Link
-                  to="/profile"
+                  to={profileRoute}
                   className="nav-user-mobile"
                   onClick={closeMenu}
                 >
@@ -227,9 +296,11 @@ export default function Navbar() {
                   <FaSignOutAlt />
                   Logout
                 </button>
+
               </>
             ) : (
               <>
+
                 <Link
                   to="/login"
                   className="nav-user-mobile"
@@ -245,6 +316,7 @@ export default function Navbar() {
                 >
                   Register
                 </Link>
+
               </>
             )}
 
@@ -259,18 +331,26 @@ export default function Navbar() {
 
         <div className="navbar-right">
 
+          {/* NOTIFICATION BELL */}
+
           {user && !isAuthPage && (
             <Notificationbell />
           )}
+
+
+          {/* =========================
+              LOGGED IN USER
+          ========================= */}
 
           {user && !isAuthPage ? (
 
             <div className="navbar-user">
 
               <Link
-                to="/profile"
+                to={profileRoute}
                 className="navbar-user-profile"
               >
+
                 <div className="navbar-avatar">
                   {user.name
                     ?.charAt(0)
@@ -278,6 +358,7 @@ export default function Navbar() {
                 </div>
 
                 <div className="navbar-user-info">
+
                   <span>
                     {user.name || "User"}
                   </span>
@@ -285,8 +366,13 @@ export default function Navbar() {
                   <small>
                     {user.role || "attendee"}
                   </small>
+
                 </div>
+
               </Link>
+
+
+              {/* LOGOUT */}
 
               <button
                 className="navbar-logout"
@@ -299,6 +385,10 @@ export default function Navbar() {
             </div>
 
           ) : !isAuthPage ? (
+
+            /* =========================
+               LOGGED OUT
+            ========================= */
 
             <div className="navbar-auth">
 
@@ -324,7 +414,7 @@ export default function Navbar() {
 
 
         {/* =========================
-            MOBILE BUTTON
+            MOBILE MENU BUTTON
         ========================= */}
 
         <button
